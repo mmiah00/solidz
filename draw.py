@@ -93,7 +93,9 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        int(polygons[point+2][1]),
                        polygons[point+2][2],
                        screen, zbuffer, color)
+            scanline_convert (polygons, point, screen, zbuffer)
         point+= 3
+
 
 def add_box( polygons, x, y, z, width, height, depth ):
     x1 = x + width
