@@ -3,7 +3,58 @@ from matrix import *
 from gmath import *
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    pass
+    p1 = polygons[i]
+        p1x = polygons[i][0]
+        p1y = polygons[i][1]
+        p1z = polygons[i][2]
+    p2 = polygons[i + 1]
+        p2x = polygons[i + 1][0]
+        p2y = polygons[i + 1][1]
+        p2z = polygons[i + 1][2]
+    p3 = polygons[i + 2]
+        p3x = polygons[i + 2][0]
+        p3y = polygons[i + 2][1]
+        p3z = polygons[i + 2][2]
+    if p1y >= p2y and p1y >= p3y:
+        T = p1
+        if p2y > p3y:
+            M = p2
+            B = p3
+        else:
+            M = p3
+            B = p2
+
+    elif p2y >= p1y and p2y >= p3y:
+        T = p2
+        if p1y > p3y:
+            M = p1
+            B = p3
+        else:
+            M = p3
+            B = p1
+    else:
+        T = p3
+        if p1 > p2:
+            M = p1
+            B = p2
+        else:
+            M = p2
+            B = p1
+    x0 = B[0]
+    x1 = B[0]
+    y = B[1]
+    slope_x0 = (T[0] - B[0] + 0.0) / (T[1] - B[1] + 0.0)
+    slope_x1 = (M[0] - B[0] + 0.0) / (M[1] - B[1] + 0.0)
+    flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
+    color = [random(265), random (265), random (265)]
+    while (y <= T[1]):
+        draw_line (x0, y, 0, x1, y, 0, screen, zbuffer, color)
+        y += 1
+        x0 += slope_x0
+        x1 += slope_x1
+        if y == M[1]:
+            slope_x1 = flip
+
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
@@ -43,7 +94,6 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        polygons[point+2][2],
                        screen, zbuffer, color)
         point+= 3
-
 
 def add_box( polygons, x, y, z, width, height, depth ):
     x1 = x + width
@@ -110,7 +160,6 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
                              points[p3][1],
                              points[p3][2])
 
-
 def generate_sphere( cx, cy, cz, r, step ):
     points = []
 
@@ -172,7 +221,6 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
                         points[p1][1],
                         points[p1][2] )
 
-
 def generate_torus( cx, cy, cz, r0, r1, step ):
     points = []
     rot_start = 0
@@ -191,7 +239,6 @@ def generate_torus( cx, cy, cz, r0, r1, step ):
 
             points.append([x, y, z])
     return points
-
 
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
@@ -226,7 +273,6 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
         y0 = y
         i+= 1
 
-
 def draw_lines( matrix, screen, zbuffer, color ):
     if len(matrix) < 2:
         print('Need at least 2 points to draw')
@@ -249,8 +295,6 @@ def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
 
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
-
-
 
 def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
 
