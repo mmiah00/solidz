@@ -1,20 +1,23 @@
 from display import *
 from matrix import *
 from gmath import *
+import random
 
 def scanline_convert(polygons, i, screen, zbuffer ):
     p1 = polygons[i]
-        p1x = polygons[i][0]
-        p1y = polygons[i][1]
-        p1z = polygons[i][2]
+    p1x = polygons[i][0]
+    p1y = polygons[i][1]
+    p1z = polygons[i][2]
+
     p2 = polygons[i + 1]
-        p2x = polygons[i + 1][0]
-        p2y = polygons[i + 1][1]
-        p2z = polygons[i + 1][2]
+    p2x = polygons[i + 1][0]
+    p2y = polygons[i + 1][1]
+    p2z = polygons[i + 1][2]
+
     p3 = polygons[i + 2]
-        p3x = polygons[i + 2][0]
-        p3y = polygons[i + 2][1]
-        p3z = polygons[i + 2][2]
+    p3x = polygons[i + 2][0]
+    p3y = polygons[i + 2][1]
+    p3z = polygons[i + 2][2]
     if p1y >= p2y and p1y >= p3y:
         T = p1
         if p2y > p3y:
@@ -46,18 +49,29 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     z1 = B[2]
     y = B[1]
     slope_x0 = (T[0] - B[0] + 0.0) / (T[1] - B[1] + 0.0)
-    slope_x1 = (M[0] - B[0] + 0.0) / (M[1] - B[1] + 0.0)
+    if M[1] - B[1] != 0:
+        slope_x1 = (M[0] - B[0] + 0.0) / (M[1] - B[1] + 0.0)
+    else:
+        slope_x1 = None
     slope_z0 = (T[2] - B[2] + 0.0) / (T[1] - B[1] + 0.0)
-    slope_z1 = (M[2] - B[2] + 0.0) / (M[1] - B[1] + 0.0)
-    flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
-    color = [random(265), random (265), random (265)]
+    if M[1] - B[1] != 0:
+        slope_z1 = (M[2] - B[2] + 0.0) / (M[1] - B[1] + 0.0)
+    else:
+        slope_z1 = None
+    if T[1] - M[1] != 0:
+        flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
+    else:
+        flip = None
+    color = [random.randint(0,255), random.randint (0,255), random.randint (0,255)]
     while (y <= T[1]):
         draw_line (x0, y, z0, x1, y, z1, screen, zbuffer, color)
         y += 1
         x0 += slope_x0
-        x1 += slope_x1
+        if slope_x1 != None:
+            x1 += slope_x1
         z0 += slope_z0
-        z1 += slope_z1
+        if slope_z1 != None:
+            z1 += slope_z1
         if y == M[1]:
             slope_x1 = flip
 
@@ -334,7 +348,8 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
         loop_end = x1
         dx_east = dx_northeast = 1
         dy_east = 0
-        dz_east = (z1 - z0) / (x1 - x0)
+        if x1 - x0 != 0:
+            dz_east = float ((z1 - z0) / (x1 - x0))
         d_east = A
         if ( A > 0 ): #octant 1
             d = A + B/2
@@ -349,7 +364,7 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
         tall = True
         dx_east = 0
         dx_northeast = 1
-        dz_northeast = (z1 - z0) / (y1 - y0)
+        dz_northeast = float ((z1 - z0) / (y1 - y0))
         if ( A > 0 ): #octant 2
             d = A/2 + B
             dy_east = dy_northeast = 1
