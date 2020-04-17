@@ -310,13 +310,19 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
     if x0 > x1:
         xt = x0
         yt = y0
+        zt = z0
+
         x0 = x1
         y0 = y1
+        z0 = z1
+
         x1 = xt
         y1 = yt
+        z1 = zt
 
     x = x0
     y = y0
+    z = z0
     A = 2 * (y1 - y0)
     B = -2 * (x1 - x0)
     wide = False
@@ -328,6 +334,7 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
         loop_end = x1
         dx_east = dx_northeast = 1
         dy_east = 0
+        dz_east = (z1 - z0) / (x1 - x0)
         d_east = A
         if ( A > 0 ): #octant 1
             d = A + B/2
@@ -342,6 +349,7 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
         tall = True
         dx_east = 0
         dx_northeast = 1
+        dz_northeast = (z1 - z0) / (y1 - y0)
         if ( A > 0 ): #octant 2
             d = A/2 + B
             dy_east = dy_northeast = 1
@@ -358,16 +366,18 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             loop_end = y
 
     while ( loop_start < loop_end ):
-        plot( screen, zbuffer, color, x, y, 0 )
+        plot( screen, zbuffer, color, x, y, z)
         if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
              (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
 
             x+= dx_northeast
             y+= dy_northeast
+            z += dz_northeast
             d+= d_northeast
         else:
             x+= dx_east
             y+= dy_east
+            z += dz_east
             d+= d_east
         loop_start+= 1
-    plot( screen, zbuffer, color, x, y, 0 )
+    plot( screen, zbuffer, color, x, y, z + 1)
