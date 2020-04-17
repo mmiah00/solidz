@@ -60,7 +60,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         zflip = None
 
     color = [250, random.randint (0,255), random.randint (0,255)]
-    while (y <= M[1]):
+    while (y < M[1]):
         draw_line (x0, y, z0, x1, y, z1, screen, zbuffer, color)
         y += 1
         if slope_x0 != None:
@@ -71,6 +71,9 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             z0 += slope_z0
         if slope_z1 != None:
             z1 += slope_z1
+    x1 = M[0]
+    z1 = M[2]
+    y = int (M[1])
     slope_x1 = xflip
     slope_z1 = zflip
     while (y <= T[1]):
