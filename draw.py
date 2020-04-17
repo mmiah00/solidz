@@ -17,7 +17,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             M = p3
             B = p2
 
-    elif p2[1] >= p1y and p2[1] >= p3[1]:
+    elif p2[1] >= p1[1] and p2[1] >= p3[1]:
         T = p2
         if p1[1] > p3[1]:
             M = p1
@@ -39,23 +39,15 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     z1 = B[2]
     y = B[1]
     if T[1] - B[1] != 0:
-        slope_x0 = (T[0] - B[0] + 0.0) / (T[1] - B[1] + 0.0)
-        slope_z0 = (T[2] - B[2] + 0.0) / (T[1] - B[1] + 0.0)
-    else:
-        slope_x0 = None
-        slope_z0 = None
-
+        slope_x0 = (T[0] - B[0]) / (T[1] - B[1])
+        slope_z0 = (T[2] - B[2]) / (T[1] - B[1])
     if M[1] - B[1] != 0:
-        slope_x1 = (M[0] - B[0] + 0.0) / (M[1] - B[1] + 0.0)
-        slope_z1 = (M[2] - B[2] + 0.0) / (M[1] - B[1] + 0.0)
-    else:
-        slope_x1 = None
-        slope_z1 = None
-
+        slope_x1 = (M[0] - B[0]) / (M[1] - B[1])
+        slope_z1 = (M[2] - B[2]) / (M[1] - B[1])
     if T[1] - M[1] != 0:
-        flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
-    else:
-        flip = None
+        xflip = (T[0] - M[0]) / (T[1] - M[1])
+        zflip = (T[2] - M[2]) / (T[1] - M[1])
+
     color = [250, random.randint (0,255), random.randint (0,255)]
     while (y <= T[1]):
         draw_line (x0, y, z0, x1, y, z1, screen, zbuffer, color)
@@ -69,7 +61,8 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         if slope_z1 != None:
             z1 += slope_z1
         if y == M[1]:
-            slope_x1 = flip
+            slope_x1 = xflip
+            slope_z1 = zflip
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
