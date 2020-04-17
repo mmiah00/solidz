@@ -5,31 +5,21 @@ import random
 
 def scanline_convert(polygons, i, screen, zbuffer ):
     p1 = polygons[i]
-    p1x = polygons[i][0]
-    p1y = polygons[i][1]
-    p1z = polygons[i][2]
-
     p2 = polygons[i + 1]
-    p2x = polygons[i + 1][0]
-    p2y = polygons[i + 1][1]
-    p2z = polygons[i + 1][2]
-
     p3 = polygons[i + 2]
-    p3x = polygons[i + 2][0]
-    p3y = polygons[i + 2][1]
-    p3z = polygons[i + 2][2]
-    if p1y >= p2y and p1y >= p3y:
+
+    if p1[1] >= p2[1] and p1[1] >= p3[1]:
         T = p1
-        if p2y > p3y:
+        if p2[1] > p3[1]:
             M = p2
             B = p3
         else:
             M = p3
             B = p2
 
-    elif p2y >= p1y and p2y >= p3y:
+    elif p2[1] >= p1y and p2[1] >= p3[1]:
         T = p2
-        if p1y > p3y:
+        if p1[1] > p3[1]:
             M = p1
             B = p3
         else:
@@ -37,7 +27,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             B = p1
     else:
         T = p3
-        if p1 > p2:
+        if p1[1] > p2[1]:
             M = p1
             B = p2
         else:
@@ -66,7 +56,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
     else:
         flip = None
-    color = [random.randint(0,255), random.randint (0,255), random.randint (0,255)]
+    color = [250, random.randint (0,255), random.randint (0,255)]
     while (y <= T[1]):
         draw_line (x0, y, z0, x1, y, z1, screen, zbuffer, color)
         y += 1
