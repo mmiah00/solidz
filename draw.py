@@ -42,16 +42,22 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             B = p1
     x0 = B[0]
     x1 = B[0]
+    z0 = B[2]
+    z1 = B[2]
     y = B[1]
     slope_x0 = (T[0] - B[0] + 0.0) / (T[1] - B[1] + 0.0)
     slope_x1 = (M[0] - B[0] + 0.0) / (M[1] - B[1] + 0.0)
+    slope_z0 = (T[2] - B[2] + 0.0) / (T[1] - B[1] + 0.0)
+    slope_z1 = (M[2] - B[2] + 0.0) / (M[1] - B[1] + 0.0)
     flip = (T[0] - M[0] + 0.0) / (T[1] - M[1] + 0.0)
     color = [random(265), random (265), random (265)]
     while (y <= T[1]):
-        draw_line (x0, y, 0, x1, y, 0, screen, zbuffer, color)
+        draw_line (x0, y, z0, x1, y, z1, screen, zbuffer, color)
         y += 1
         x0 += slope_x0
         x1 += slope_x1
+        z0 += slope_z0
+        z1 += slope_z1
         if y == M[1]:
             slope_x1 = flip
 
@@ -72,27 +78,27 @@ def draw_polygons( polygons, screen, zbuffer, color ):
         normal = calculate_normal(polygons, point)[:]
         #print normal
         if normal[2] > 0:
-            draw_line( int(polygons[point][0]),
-                       int(polygons[point][1]),
-                       polygons[point][2],
-                       int(polygons[point+1][0]),
-                       int(polygons[point+1][1]),
-                       polygons[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(polygons[point+2][0]),
-                       int(polygons[point+2][1]),
-                       polygons[point+2][2],
-                       int(polygons[point+1][0]),
-                       int(polygons[point+1][1]),
-                       polygons[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(polygons[point][0]),
-                       int(polygons[point][1]),
-                       polygons[point][2],
-                       int(polygons[point+2][0]),
-                       int(polygons[point+2][1]),
-                       polygons[point+2][2],
-                       screen, zbuffer, color)
+            # draw_line( int(polygons[point][0]),
+            #            int(polygons[point][1]),
+            #            polygons[point][2],
+            #            int(polygons[point+1][0]),
+            #            int(polygons[point+1][1]),
+            #            polygons[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(polygons[point+2][0]),
+            #            int(polygons[point+2][1]),
+            #            polygons[point+2][2],
+            #            int(polygons[point+1][0]),
+            #            int(polygons[point+1][1]),
+            #            polygons[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(polygons[point][0]),
+            #            int(polygons[point][1]),
+            #            polygons[point][2],
+            #            int(polygons[point+2][0]),
+            #            int(polygons[point+2][1]),
+            #            polygons[point+2][2],
+            #            screen, zbuffer, color)
             scanline_convert (polygons, point, screen, zbuffer)
         point+= 3
 
