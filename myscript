@@ -24,14 +24,40 @@ move
 245 80 0
 rotate
 x 90
+push
 torus
 0 0 0 5 40
 push
 pop
 move
-0 160 0
+160 160 0
 torus
 0 0 0 5 40
+push
+pop
+move
+0 160 160
+rotate
+x 90
+rotate
+y 90
+rotate
+z 90
+push
+torus
+0 0 0 5 40
+push
+move
+-360 150 40
+rotate
+y 45
+box
+0 0 0 100 10 10
+rotate
+y -90
+box
+-50 -35 -40 100 10 10
+push
 display
 save
 tic-tac-toe.png
