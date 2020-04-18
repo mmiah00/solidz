@@ -58,6 +58,28 @@ y -90
 box
 -50 -35 -40 100 10 10
 push
+rotate
+y 90
+rotate
+y -45
+rotate
+z -90
+rotate
+x -90
+move
+180 360 30
+push
+rotate
+z 90
+rotate
+y 45
+box
+-30 0 20 100 10 10
+rotate
+y -90
+box
+-35 -60 -20 100 10 10
+push
 display
 save
 tic-tac-toe.png
