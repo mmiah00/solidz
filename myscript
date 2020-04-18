@@ -1,49 +1,37 @@
 push
 move
-150 100 0
+165 490 0
+push
+box
+0 0 0 10 480 10
+push
+move
+160 0 0
+box
+0 0 0 10 480 10
+push
+move
+-320 -160 0
+box
+0 0 0 480 10 10
+push
+move
+0 -160 0
+box
+0 0 0 480 10 10
+push
+move
+245 80 0
 rotate
-x 30
-rotate
-y 30
+x 90
+torus
+0 0 0 5 40
 push
-box
-0 0 0 200 25 200
-push
+pop
 move
-12.5 25 0
-box
-0 0 0 175 25 175
-push
-move
-12.5 25 0
-box
-0 0 0 150 25 150
-push
-move
-12.5 25 0
-box
-0 0 0 125 25 125
-push
-move
-12.5 25 0
-box
-0 0 0 100 25 100
-push
-move
-12.5 25 0
-box
-0 0 0 75 25 75
-push
-move
-12.5 25 0
-box
-0 0 0 50 25 50
-move
-12.5 25 0
-box
-0 0 0 25 25 25
-push
-push
+0 160 0
+torus
+0 0 0 5 40
 display
 save
-pyramid.png
+tic-tac-toe.png
